@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.PlanetAttributes
 {
-    public class InstableOrbit : Orbit
+    public class InstablePlanet : PlanetAttribute
     {
         #region FIELDS
 
         [SerializeField]
         [Range(0.01f, 5)]
-        private float _instabilityOffset;
+        private float _instabilityOffset = 1.0f;
+
         [SerializeField]
         [Range(0.1f, 5)]
         private float _instabilitySpeed = 1.0f;
+
         [SerializeField]
-        private bool _instabilityActive;
+        private bool _instabilityActive = true;
 
         private bool _ascending;
 
@@ -26,14 +28,14 @@ namespace Assets.Scripts
         /// <summary>
         /// Стандартный (первоначальный) радиус нестабильной орбиты
         /// </summary>
-        public float StandardRadius 
+        public float StandardOrbitRadius 
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// Сдвиг нестабильности (т.е. максимальный радиус равен StandardRadius + InstabilityOffset)
+        /// Сдвиг нестабильности (т.е. максимальный радиус орбиты равен StandardRadius + InstabilityOffset)
         /// </summary>
         public float InstabilityOffset
         {
@@ -61,43 +63,32 @@ namespace Assets.Scripts
 
         #endregion
 
-
-        protected override void Start()
+        protected override void Awake()
         {
-            base.Start();
+            base.Awake();
 
-            StandardRadius = Radius;
-
-            _ascending = true;
-
-            //StartCoroutine(InstableCourutine(0.02f));
         }
 
-        public void FixedUpdate()
+        protected virtual void Start()
+        {
+            StandardOrbitRadius = Orbit.Radius;
+            _ascending = true;
+        }
+
+        protected virtual void FixedUpdate()
         {
             Instable();
         }
 
-        //IEnumerator InstableCourutine(float interval)
-        //{
-        //    while (true)
-        //    {
-        //        if (InstabilityActive)
-        //            Instable();
-
-        //        yield return new WaitForSeconds(interval);
-        //    }
-        //}
-
         private void Instable()
         {
-            Vector3 newScale = transform.localScale;
+            Vector3 newScale = Orbit.transform.localScale;
 
-            if (Radius > (StandardRadius + InstabilityOffset) &&
+            if (Orbit.Radius > (StandardOrbitRadius + InstabilityOffset) &&
                 _ascending)
                 _ascending = false;
 
-            if (Radius < StandardRadius && !_ascending)
+            if (Orbit.Radius < StandardOrbitRadius && !_ascending)
                 _ascending = true;
 
             if (_ascending)
@@ -105,7 +96,7 @@ namespace Assets.Scripts
             else
                 newScale /= 1 + 0.01f * InstabilitySpeed;
 
-            transform.localScale = newScale;
+            Orbit.transform.localScale = newScale;
         }
 
     }
