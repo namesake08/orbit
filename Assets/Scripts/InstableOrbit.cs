@@ -23,36 +23,24 @@ namespace Assets.Scripts
 
         #region PROPERTIES
 
-        /// <summary>
-        /// Стандартный (первоначальный) радиус нестабильной орбиты
-        /// </summary>
         public float StandardRadius 
         {
             get;
             private set;
         }
 
-        /// <summary>
-        /// Сдвиг нестабильности (т.е. максимальный радиус равен StandardRadius + InstabilityOffset)
-        /// </summary>
         public float InstabilityOffset
         {
             get {return _instabilityOffset;}
             set {_instabilityOffset = value;}
         }
 
-        /// <summary>
-        /// Скорость нестабильности
-        /// </summary>
         public float InstabilitySpeed
         {
             get { return _instabilitySpeed; }
             set { _instabilitySpeed = value; }
         }
 
-        /// <summary>
-        /// Активна ли нестабильность
-        /// </summary>
         public bool InstabilityActive
         {
             get { return _instabilityActive; }
@@ -60,6 +48,7 @@ namespace Assets.Scripts
         }
 
         #endregion
+
 
 
         protected override void Start()
@@ -70,24 +59,20 @@ namespace Assets.Scripts
 
             _ascending = true;
 
-            //StartCoroutine(InstableCourutine(0.02f));
+            StartCoroutine(InstableCourutine(0.05f));
         }
 
-        public void FixedUpdate()
+
+        IEnumerator InstableCourutine(float interval)
         {
-            Instable();
+            while (true)
+            {
+                if (InstabilityActive)
+                    Instable();
+
+                yield return new WaitForSeconds(interval);
+            }
         }
-
-        //IEnumerator InstableCourutine(float interval)
-        //{
-        //    while (true)
-        //    {
-        //        if (InstabilityActive)
-        //            Instable();
-
-        //        yield return new WaitForSeconds(interval);
-        //    }
-        //}
 
         private void Instable()
         {
@@ -107,7 +92,6 @@ namespace Assets.Scripts
 
             transform.localScale = newScale;
         }
-
     }
 
 

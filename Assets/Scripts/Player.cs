@@ -6,9 +6,7 @@ namespace Assets.Scripts
 {
     public class Player : Planet
     {
-        /// <summary>
-        /// Список орбит, на которые может перескочить игрок
-        /// </summary>
+
         public List<Orbit> PossibleOrbits;
 
         void OnTriggerEnter(Collider collider)
