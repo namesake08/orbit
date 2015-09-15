@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts
 {
-    public class Planet : MonoBehaviour
+    public class Planet : CachedBehaviour
     {
 
         #region FIELDS
@@ -16,7 +16,9 @@ namespace Assets.Scripts
 
         [SerializeField]
         [Range(-1, 1)]
-        private int _orbitingDirection;
+        private int _orbitingDirection = 1;
+
+        private bool _invisible;
 
         #endregion
 
@@ -78,6 +80,19 @@ namespace Assets.Scripts
             private set;
         }
 
+        /// <summary>
+        /// Включает/выключает невидимость планеты
+        /// </summary>
+        public bool Invisible
+        {
+            get { return _invisible; }
+            set 
+            { 
+                _invisible = value; 
+                SetVisibility(); 
+            }
+        }
+
         #endregion
 
 
@@ -90,15 +105,17 @@ namespace Assets.Scripts
             OrbitingTime = 0;
         }
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            SelfOrbit = GetComponentInChildren<Orbit>();
+            base.Awake();
 
         }
 
         // Use this for initialization
         protected virtual void Start()
         {
-            SelfOrbit = GetComponentInChildren<Orbit>();
+            
         }
 
         // Update is called once per frame
@@ -129,6 +146,25 @@ namespace Assets.Scripts
             targetPos.x += Mathf.Cos(OrbitingAngle) * AttachOrbit.Radius;
             targetPos.y += Mathf.Sin(OrbitingAngle) * AttachOrbit.Radius;
             transform.position = targetPos;
+        }
+
+        private void SetVisibility()
+        {
+            Material m_p = Renderer.material;
+            Material m_o = SelfOrbit.Renderer.material;
+            Color c_p = m_p.color;
+            Color c_o = m_o.color;
+            if (Invisible)
+                c_p.a = c_o.a = 0.5f;
+            else
+                c_p.a = c_o.a = 1f;
+            m_p.color = c_p;
+            m_o.color = c_o;
+            Renderer.material = m_p;
+            SelfOrbit.Renderer.material = m_o;
+
+            Collider.enabled = !Invisible;
+            SelfOrbit.Collider.enabled = !Invisible;
         }
     }
 }

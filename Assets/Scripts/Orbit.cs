@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts
 {
-    public class Orbit : MonoBehaviour
+    public class Orbit : CachedBehaviour
     {
 
         #region PROPERTIES
@@ -14,16 +14,12 @@ namespace Assets.Scripts
             private set;
         }
 
-        public MeshRenderer MeshRenderer
-        {
-            get;
-            set;
-        }
         #endregion
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
-            MeshRenderer = GetComponent<MeshRenderer>();
+            base.Awake();
+
             Radius = MeshRenderer.bounds.size.x / 2;
         }
 
@@ -37,6 +33,11 @@ namespace Assets.Scripts
         protected virtual void Update()
         {
             Radius = MeshRenderer.bounds.size.x / 2;
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            
         }
 
 
