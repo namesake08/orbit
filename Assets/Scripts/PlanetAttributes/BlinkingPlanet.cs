@@ -12,6 +12,8 @@ namespace Assets.Scripts.PlanetAttributes
 
         [SerializeField]
         private bool _blinkingActive = true;
+
+        private GameObject _clocks;
         #endregion
 
         #region PROPERTIES
@@ -42,7 +44,15 @@ namespace Assets.Scripts.PlanetAttributes
 
         protected virtual void Start()
         {
-            StartCoroutine(InstableCourutine());   
+            StartCoroutine(InstableCourutine());
+
+            _clocks = Instantiate(GameValues.Clocks);
+            _clocks.transform.parent = transform;
+            _clocks.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
+            Vector3 clocksScale = transform.localScale * 0.7f;
+            if (clocksScale.magnitude < new Vector3(0.6f, 0.6f, 0.6f).magnitude)
+                clocksScale = new Vector3(0.6f, 0.6f, 0.6f);
+            _clocks.transform.localScale = clocksScale;
         }
 
         IEnumerator InstableCourutine()

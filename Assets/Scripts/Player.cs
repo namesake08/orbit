@@ -20,13 +20,6 @@ namespace Assets.Scripts
 
         void OnTriggerEnter(Collider collider)
         {
-            //Asteroid colliderAsteroid = collider.GetComponent<Asteroid>();
-            //if (colliderAsteroid != null && colliderAsteroid.AttachOrbit != SelfOrbit)
-            //{
-            //    Asteroids.Add(colliderAsteroid);
-            //    colliderAsteroid.AttachOrbit = SelfOrbit;
-            //    Debug.Log("collide ");
-            //}
             Orbit colliderOrbit = collider.GetComponent<Orbit>();
             if (colliderOrbit != null && colliderOrbit != AttachOrbit)
             {
@@ -62,18 +55,27 @@ namespace Assets.Scripts
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (PossibleOrbits.Count > 0)
-                {
-                    ChangeAttachOrbit(PossibleOrbits[0]);
-                    PossibleOrbits.Remove(AttachOrbit);
-                }
+                OrbitalJump();
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                OrbitingDirection = -OrbitingDirection;
+                SwitchDirection();
             }
         }
+
+        /// <summary>
+        /// Перескочить на другую орбиту
+        /// </summary>
+        protected void OrbitalJump()
+        {
+            if (PossibleOrbits.Count > 0)
+            {
+                AttachOrbit = PossibleOrbits[0];
+                PossibleOrbits.Remove(AttachOrbit);
+            }
+        }
+
     }
 
 }

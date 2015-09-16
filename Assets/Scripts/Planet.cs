@@ -18,6 +18,8 @@ namespace Assets.Scripts
         [Range(-1, 1)]
         private int _orbitingDirection = 1;
 
+        private float _orbitingAngle;
+
         private bool _invisible;
 
         #endregion
@@ -39,12 +41,18 @@ namespace Assets.Scripts
         public Orbit AttachOrbit
         {
             get { return _attachOrbit; }
-            set { _attachOrbit = value; }
+            set 
+            { 
+                _attachOrbit = value;
+                OrbitingTime = 0;
+                OrbitingAngle = MathHelper.AngleBetween(value.transform.position, transform.position);
+            }
         }
 
         /// <summary>
         /// Направление движения по орбите 
         /// (1: по часовой стрелке; 
+        ///  0: отсутствие движения;
         /// -1: против часовой стрелки)
         /// </summary>
         public int OrbitingDirection
@@ -67,8 +75,14 @@ namespace Assets.Scripts
         /// </summary>
         public float OrbitingAngle
         {
-            get;
-            set;
+            get { return _orbitingAngle; }
+            set
+            {
+                if (value < -2 * Mathf.PI || value > 2 * Mathf.PI)
+                    _orbitingAngle = 0;
+                else
+                    _orbitingAngle = value;
+            }
         }
 
         /// <summary>
@@ -96,13 +110,12 @@ namespace Assets.Scripts
         #endregion
 
 
-        public void ChangeAttachOrbit(Orbit newOrbit)
+        /// <summary>
+        /// Сменить направление движения на противоположное.
+        /// </summary>
+        public void SwitchDirection()
         {
-            Vector2 thisPos = new Vector2(transform.position.x, transform.position.y);
-            Vector2 orbitPos = new Vector2(newOrbit.transform.position.x, newOrbit.transform.position.y);
-            OrbitingAngle = MathHelper.AngleBetween(orbitPos, thisPos);
-            AttachOrbit = newOrbit;
-            OrbitingTime = 0;
+            OrbitingDirection = -OrbitingDirection;
         }
 
         protected override void Awake()
@@ -150,18 +163,29 @@ namespace Assets.Scripts
 
         private void SetVisibility()
         {
-            Material m_p = Renderer.material;
-            Material m_o = SelfOrbit.Renderer.material;
-            Color c_p = m_p.color;
-            Color c_o = m_o.color;
+            //Material m_p = Renderer.material;
+            //Material m_o = SelfOrbit.Renderer.material;
+            //Color c_p = m_p.color;
+            //Color c_o = m_o.color;
+            //if (Invisible)
+            //    c_p.a = c_o.a = 0.5f;
+            //else
+            //    c_p.a = c_o.a = 1f;
+            //m_p.color = c_p;
+            //m_o.color = c_o;
+            //Renderer.material = m_p;
+            //SelfOrbit.Renderer.material = m_o;
+
             if (Invisible)
-                c_p.a = c_o.a = 0.5f;
+            {
+                Renderer.material = GameValues.InvisibleMaterial;
+                SelfOrbit.Renderer.material = GameValues.InvisibleMaterial;
+            }
             else
-                c_p.a = c_o.a = 1f;
-            m_p.color = c_p;
-            m_o.color = c_o;
-            Renderer.material = m_p;
-            SelfOrbit.Renderer.material = m_o;
+            {
+                Renderer.material = StandardMaterial;
+                SelfOrbit.Renderer.material = SelfOrbit.StandardMaterial;
+            }
 
             Collider.enabled = !Invisible;
             SelfOrbit.Collider.enabled = !Invisible;
