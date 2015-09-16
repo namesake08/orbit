@@ -10,7 +10,7 @@ namespace Assets.Scripts.PlanetAttributes
 
     [AddComponentMenu("Splines/Spline Controller")]
     [RequireComponent(typeof(SplineInterpolator))]
-    public class WanderingPlanet : MonoBehaviour
+    public class WanderingPlanet : PlanetAttribute
     {
 
         #region FIELDS
