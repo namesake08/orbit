@@ -42,6 +42,7 @@ MonoBehaviour:
   _splineLineMaterial: {fileID: 2100000, guid: f89a53f13e64bbbd73bd6eb9f8509a09, type: 2}
   _splineLineTrail: {fileID: 104542, guid: 35809f2bf0118af458b139d4de1bacde, type: 2}
   _invisibleMaterial: {fileID: 2100000, guid: f89a53f13e64bbbd73bd6eb9f8509a09, type: 2}
+  _clocks: {fileID: 117384, guid: 141629c96a88388488780860556ea971, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
