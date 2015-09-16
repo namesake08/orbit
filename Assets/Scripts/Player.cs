@@ -6,10 +6,17 @@ namespace Assets.Scripts
 {
     public class Player : Planet
     {
+        #region PROPERTIES
         /// <summary>
         /// Список орбит, на которые может перескочить игрок
         /// </summary>
         public List<Orbit> PossibleOrbits;
+
+        /// <summary>
+        /// Список астероидов, привязанных к игроку
+        /// </summary>
+        public List<Asteroid> Asteroids;
+        #endregion
 
         void OnTriggerEnter(Collider collider)
         {
@@ -31,7 +38,7 @@ namespace Assets.Scripts
 
         protected override void Awake()
         {
-
+            base.Awake();
         }
 
         // Use this for initialization
@@ -48,18 +55,27 @@ namespace Assets.Scripts
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (PossibleOrbits.Count > 0)
-                {
-                    ChangeAttachOrbit(PossibleOrbits[0]);
-                    PossibleOrbits.Remove(AttachOrbit);
-                }
+                OrbitalJump();
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                OrbitingDirection = -OrbitingDirection;
+                SwitchDirection();
             }
         }
+
+        /// <summary>
+        /// Перескочить на другую орбиту
+        /// </summary>
+        protected void OrbitalJump()
+        {
+            if (PossibleOrbits.Count > 0)
+            {
+                AttachOrbit = PossibleOrbits[0];
+                PossibleOrbits.Remove(AttachOrbit);
+            }
+        }
+
     }
 
 }
