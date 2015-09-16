@@ -8,15 +8,21 @@ namespace Assets.Scripts
         #region FIELDS
         [SerializeField]
         private Material _splineLineMaterial;
+
+        [SerializeField]
+        private GameObject _splineLineTrail;
         #endregion
 
         #region PROPERTIES
         public static Material SplineLineMaterial;
+        public static GameObject SplineLineTrail;
         #endregion
 
         void Awake()
         {
             SplineLineMaterial = _splineLineMaterial;
+            SplineLineTrail = _splineLineTrail;
+
         }
 
         // Update is called once per frame

@@ -68,6 +68,8 @@ namespace Assets.Scripts.PlanetAttributes
         private Transform[] mTransforms;
         private LineRenderer _lineRenderer;
 
+        private GameObject _trail;
+
         void OnDrawGizmos()
         {
             if (SplineRoot == null)
@@ -135,6 +137,11 @@ namespace Assets.Scripts.PlanetAttributes
 
         void Start()
         {
+
+            _trail = Instantiate(GameValues.SplineLineTrail);
+
+            _trail.transform.parent = transform;
+            _trail.transform.localPosition = new Vector3(0, 0, -0.1f);
 
             mSplineInterp = GetComponent(typeof(SplineInterpolator)) as SplineInterpolator;
 
