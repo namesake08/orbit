@@ -17,7 +17,6 @@ namespace Assets.Scripts
         /// </summary>
         public List<Asteroid> Asteroids;
         #endregion
-
         void OnTriggerEnter(Collider collider)
         {
             Orbit colliderOrbit = collider.GetComponent<Orbit>();
@@ -25,6 +24,7 @@ namespace Assets.Scripts
             {
                 PossibleOrbits.Add(colliderOrbit);
             }
+            
         }
 
         void OnTriggerExit(Collider collider)
