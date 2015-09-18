@@ -10,8 +10,11 @@ namespace Assets.Scripts
 
         public float Radius
         {
-            get;
-            private set;
+            get
+            {
+                // 0.5 - стандартный размер сферы (примитива) в редакторе
+                return 0.5f * transform.lossyScale.x; //Radius = MeshRenderer.bounds.size.x / 2;
+            }
         }
 
         #endregion
@@ -20,7 +23,6 @@ namespace Assets.Scripts
         {
             base.Awake();
 
-            Radius = MeshRenderer.bounds.size.x / 2;
         }
 
         // Use this for initialization
@@ -32,14 +34,13 @@ namespace Assets.Scripts
         // Update is called once per frame
         protected virtual void Update()
         {
-            Radius = MeshRenderer.bounds.size.x / 2;
+
         }
 
         protected virtual void FixedUpdate()
         {
             
         }
-
 
     }
 }

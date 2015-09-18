@@ -22,14 +22,20 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
-           // _time += Time.deltaTime;
-           // float speed = 2 * Mathf.PI;
-
             _angle -= (Speed * Time.deltaTime).ToDegrees();
-            if (_angle < -360)
-                _angle = 0;
+            if (_angle < 0)
+                _angle = 360;
 
+            // Вращение стрелки
             _arrow.localRotation = Quaternion.Euler(0f, 0f, _angle);
+
+            // "Анти-вращение" относительно родителя
+            if (transform.parent != null)
+            {
+                Quaternion q = transform.parent.rotation;
+                transform.localRotation = new Quaternion(-q.x, -q.y, -q.z, q.w);
+            }
+
         }
     }
 }

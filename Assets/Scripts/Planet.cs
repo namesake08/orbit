@@ -141,6 +141,16 @@ namespace Assets.Scripts
         protected virtual void FixedUpdate()
         {
             OrbitalMotion();
+            SelfRotation();
+        }
+
+        private void SelfRotation()
+        {
+            //transform.rotation = new Quaternion(0, transform.rotation.y + 0.1f * 2 * Mathf.PI, 0, 0);
+            //transform.Rotate(new Vector3(0, 0, Random.Range(1.4f, 1.6f)));
+            transform.Rotate(new Vector3(0, 0, 1.5f));
+            if (SelfOrbit != null)
+                SelfOrbit.transform.Rotate(new Vector3(0, 0, -1.5f));
         }
 
         private void OrbitalMotion()
