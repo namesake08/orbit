@@ -179,16 +179,19 @@ namespace Assets.Scripts
             if (Invisible)
             {
                 Renderer.material = GameValues.InvisibleMaterial;
-                SelfOrbit.Renderer.material = GameValues.InvisibleMaterial;
+                if (SelfOrbit != null)
+                    SelfOrbit.Renderer.material = GameValues.InvisibleMaterial;
             }
             else
             {
                 Renderer.material = StandardMaterial;
-                SelfOrbit.Renderer.material = SelfOrbit.StandardMaterial;
+                if (SelfOrbit != null)
+                    SelfOrbit.Renderer.material = SelfOrbit.StandardMaterial;
             }
 
             Collider.enabled = !Invisible;
-            SelfOrbit.Collider.enabled = !Invisible;
+            if (SelfOrbit != null)
+                SelfOrbit.Collider.enabled = !Invisible;
         }
     }
 }

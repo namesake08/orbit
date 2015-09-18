@@ -62,6 +62,15 @@ namespace Assets.Scripts
             {
                 SwitchDirection();
             }
+
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (touch.position.x > Screen.height / 2)
+                    OrbitalJump();
+                if (touch.position.x < Screen.height / 2)
+                    SwitchDirection();
+            }
         }
 
         /// <summary>

@@ -53,6 +53,7 @@ namespace Assets.Scripts.PlanetAttributes
             if (clocksScale.magnitude < new Vector3(0.6f, 0.6f, 0.6f).magnitude)
                 clocksScale = new Vector3(0.6f, 0.6f, 0.6f);
             _clocks.transform.localScale = clocksScale;
+            _clocks.GetComponent<Clocks>().Speed /= BlinkingInterval;
         }
 
         IEnumerator InstableCourutine()

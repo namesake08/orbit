@@ -9,6 +9,7 @@ namespace Assets.Scripts
         private const float secondsToDegrees = 360f / 60f;
         private float _time = 0;
         private float _angle = 0;
+        public float Speed = 2 * Mathf.PI;
 
         public Transform _arrow;
 
@@ -22,9 +23,9 @@ namespace Assets.Scripts
         void Update()
         {
            // _time += Time.deltaTime;
-            float speed = 2 * Mathf.PI;
+           // float speed = 2 * Mathf.PI;
 
-            _angle -= (speed * Time.deltaTime).ToDegrees();
+            _angle -= (Speed * Time.deltaTime).ToDegrees();
             if (_angle < -360)
                 _angle = 0;
 
