@@ -6,10 +6,25 @@ namespace Assets.Scripts
 {
     public class Clocks : CachedBehaviour
     {
-        private const float secondsToDegrees = 360f / 60f;
-        private float _time = 0;
+        public event Action OnTick;
+
         private float _angle = 0;
-        public float Speed = 2 * Mathf.PI;
+        private float _currentSeconds;
+
+        [Range(0.1f, 100)]
+        public float MaxSeconds = 1f;
+        
+        public float CurrentSeconds
+        {
+            get { return _currentSeconds; }
+            set 
+            {
+                if (value > MaxSeconds || value < 0)
+                    _currentSeconds = 0;
+                else
+                    _currentSeconds = value;
+            }
+        }
 
         public Transform _arrow;
 
@@ -22,12 +37,14 @@ namespace Assets.Scripts
         // Update is called once per frame
         void Update()
         {
-            _angle -= (Speed * Time.deltaTime).ToDegrees();
-            if (_angle < 0)
-                _angle = 360;
+            if (CurrentSeconds == 0 && OnTick != null)
+                OnTick();
+
+            CurrentSeconds += Time.deltaTime;
+            _angle = (CurrentSeconds / MaxSeconds) * 2 * -Mathf.PI;
 
             // Вращение стрелки
-            _arrow.localRotation = Quaternion.Euler(0f, 0f, _angle);
+            _arrow.localRotation = Quaternion.Euler(0f, 0f, _angle.ToDegrees());
 
             // "Анти-вращение" относительно родителя
             if (transform.parent != null)

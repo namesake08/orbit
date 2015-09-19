@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.GameLogic
 {
-    [RequireComponent(typeof(Planet))]
+    [RequireComponent(typeof(PlanetController))]
     public class PlanetAttribute : CachedBehaviour
     {
         #region PROPERTIES
@@ -17,13 +17,21 @@ namespace Assets.Scripts
             get;
             private set;
         }
+
+        public PlanetController PlanetController
+        {
+            get;
+            private set;
+        }
         #endregion
 
         protected override void Awake()
         {
             base.Awake();
 
-            Planet = GetComponent<Planet>();
+            PlanetController = GetComponent<PlanetController>();
+
+            Planet = GetComponentInChildren<Planet>(); //PlanetController.Planet;
             Orbit = GetComponentInChildren<Orbit>();
         }
 

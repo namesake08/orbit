@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts.GameLogic;
 
 namespace Assets.Scripts.PlanetAttributes
 {
@@ -13,7 +14,7 @@ namespace Assets.Scripts.PlanetAttributes
         [SerializeField]
         private bool _blinkingActive = true;
 
-        private GameObject _clocks;
+        private Clocks _clocks;
         #endregion
 
         #region PROPERTIES
@@ -44,32 +45,26 @@ namespace Assets.Scripts.PlanetAttributes
 
         protected virtual void Start()
         {
-            StartCoroutine(InstableCourutine());
-
-            _clocks = Instantiate(GameValues.Clocks);
+            GameObject clocks = Instantiate(GameValues.Clocks);
+            _clocks = clocks.GetComponent<Clocks>();
             _clocks.transform.parent = transform;
             _clocks.transform.localPosition = new Vector3(0.0f, 0.0f, -1.0f);
             Vector3 clocksScale = transform.localScale * 0.7f;
             if (clocksScale.magnitude < new Vector3(0.6f, 0.6f, 0.6f).magnitude)
                 clocksScale = new Vector3(0.6f, 0.6f, 0.6f);
             _clocks.transform.localScale = clocksScale;
-            _clocks.GetComponent<Clocks>().Speed /= BlinkingInterval;
+
+            _clocks.OnTick += Blink;
         }
 
-        IEnumerator InstableCourutine()
+        protected virtual void Update()
         {
-            while (true)
-            {
-                if (BlinkingActive)
-                    Blink();
-
-                yield return new WaitForSeconds(BlinkingInterval);
-            }
+            _clocks.MaxSeconds = BlinkingInterval;
         }
 
         private void Blink()
         {
-            Planet.Invisible = !Planet.Invisible;
+            PlanetController.Invisible = !PlanetController.Invisible;
         }
     }
 }

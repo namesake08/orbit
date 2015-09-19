@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.GameLogic
 {
-    public class Planet : CachedBehaviour
+    public class PlanetController : CachedBehaviour
     {
 
         #region FIELDS
 
         [SerializeField]
+        private Transform _initAttachOrbit;
+
+        private Transform _prevOrbitTransform;
+
+        //[SerializeField]
         private Orbit _attachOrbit;
 
         [SerializeField]
+        [Range(0.01f, 10)]
+        private float _orbitingSpeedMultiplier = 1;
+
         private float _orbitingSpeed;
 
         [SerializeField]
@@ -26,13 +35,16 @@ namespace Assets.Scripts
 
         #region PROPERTIES
 
-        /// <summary>
-        /// Собственная орбита планеты.
-        /// </summary>
-        public Orbit SelfOrbit
+        public Orbit Orbit
         {
             get;
-            set;
+            private set;
+        }
+
+        public Planet Planet
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -45,7 +57,8 @@ namespace Assets.Scripts
             { 
                 _attachOrbit = value;
                 OrbitingTime = 0;
-                OrbitingAngle = MathHelper.AngleBetween(value.transform.position, transform.position);
+                if (value != null)
+                    OrbitingAngle = MathHelper.AngleBetween(value.transform.position, transform.position);
             }
         }
 
@@ -68,6 +81,15 @@ namespace Assets.Scripts
         {
             get { return _orbitingSpeed; }
             set { _orbitingSpeed = value; }
+        }
+
+        /// <summary>
+        /// Множитель скорости движения по орбите
+        /// </summary>
+        public float OrbitingSpeedMultiplier
+        {
+            get { return _orbitingSpeedMultiplier; }
+            set { _orbitingSpeedMultiplier = value; }
         }
 
         /// <summary>
@@ -120,9 +142,12 @@ namespace Assets.Scripts
 
         protected override void Awake()
         {
-            SelfOrbit = GetComponentInChildren<Orbit>();
             base.Awake();
 
+            Planet = GetComponentInChildren<Planet>();
+            Orbit = GetComponentInChildren<Orbit>();
+
+            InitAttachOrbit();
         }
 
         // Use this for initialization
@@ -131,11 +156,14 @@ namespace Assets.Scripts
             
         }
 
+        
         // Update is called once per frame
         protected virtual void Update()
         {
-            // if (AttachOrbit != null)
-            //     OrbitingSpeed = 1 / AttachOrbit.Radius;
+            if (_initAttachOrbit != _prevOrbitTransform)
+                InitAttachOrbit();
+            _prevOrbitTransform = _initAttachOrbit;
+
         }
 
         protected virtual void FixedUpdate()
@@ -144,13 +172,33 @@ namespace Assets.Scripts
             SelfRotation();
         }
 
+        private void InitAttachOrbit()
+        {
+            if (_initAttachOrbit == null)
+                return;
+
+            PlanetController controller = _initAttachOrbit.GetComponent<PlanetController>();
+            if (controller != null)
+            {
+                AttachOrbit = controller.Orbit;
+                return;
+            }
+            Orbit orbit = _initAttachOrbit.GetComponent<Orbit>();
+            if (orbit != null)
+            {
+                AttachOrbit = orbit;
+                return;
+            }
+            _initAttachOrbit = null;
+        }
+
         private void SelfRotation()
         {
-            //transform.rotation = new Quaternion(0, transform.rotation.y + 0.1f * 2 * Mathf.PI, 0, 0);
-            //transform.Rotate(new Vector3(0, 0, Random.Range(1.4f, 1.6f)));
-            transform.Rotate(new Vector3(0, 0, 1.5f));
-            if (SelfOrbit != null)
-                SelfOrbit.transform.Rotate(new Vector3(0, 0, -1.5f));
+            float rand = UnityEngine.Random.Range(5.0f, 5.7f);
+
+            Planet.transform.Rotate(new Vector3(0, 0, rand));
+
+            //Orbit.transform.Rotate(new Vector3(0, 0, 5f));
         }
 
         private void OrbitalMotion()
@@ -163,11 +211,12 @@ namespace Assets.Scripts
 
             Vector3 orbitPos = AttachOrbit.transform.position;
             Vector3 targetPos = new Vector3(orbitPos.x, orbitPos.y, transform.position.z);
-            float speed = (2 * Mathf.PI) * OrbitingSpeed; //количество кругов, совершаемых в секунду
+            float speed = (2 * Mathf.PI) * OrbitingSpeed * OrbitingSpeedMultiplier; //количество кругов, совершаемых в секунду
 
             OrbitingAngle += OrbitingDirection * speed * Time.deltaTime;
             targetPos.x += Mathf.Cos(OrbitingAngle) * AttachOrbit.Radius;
             targetPos.y += Mathf.Sin(OrbitingAngle) * AttachOrbit.Radius;
+
             transform.position = targetPos;
         }
 
@@ -188,20 +237,23 @@ namespace Assets.Scripts
 
             if (Invisible)
             {
-                Renderer.material = GameValues.InvisibleMaterial;
-                if (SelfOrbit != null)
-                    SelfOrbit.Renderer.material = GameValues.InvisibleMaterial;
+                if (Planet != null)
+                    Planet.Renderer.material = GameValues.InvisibleMaterial;
+                if (Orbit != null)
+                    Orbit.Renderer.material = GameValues.InvisibleMaterial;
             }
             else
             {
-                Renderer.material = StandardMaterial;
-                if (SelfOrbit != null)
-                    SelfOrbit.Renderer.material = SelfOrbit.StandardMaterial;
+                if (Planet != null)
+                    Planet.Renderer.material = Planet.StandardMaterial;
+                if (Orbit != null)
+                    Orbit.Renderer.material = Orbit.StandardMaterial;
             }
 
-            Collider.enabled = !Invisible;
-            if (SelfOrbit != null)
-                SelfOrbit.Collider.enabled = !Invisible;
+            if (Planet != null)
+                Planet.Collider.enabled = !Invisible;
+            if (Orbit != null)
+                Orbit.Collider.enabled = !Invisible;
         }
     }
 }

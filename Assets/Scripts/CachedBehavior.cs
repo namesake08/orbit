@@ -22,19 +22,12 @@ namespace Assets.Scripts
             private set;
         }
 
-        public Material StandardMaterial
-        {
-            get;
-            private set;
-        }
-
 
         protected virtual void Awake()
         {
             MeshRenderer = GetComponent<MeshRenderer>();
             Renderer = GetComponent<Renderer>();
             Collider = GetComponent<Collider>();
-            StandardMaterial = Renderer.material;
         }
 
     }

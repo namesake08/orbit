@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.GameLogic
 {
-    public class Player : Planet
+    public class PlayerController : PlanetController
     {
         #region PROPERTIES
         /// <summary>
@@ -17,28 +17,12 @@ namespace Assets.Scripts
         /// </summary>
         public List<Asteroid> Asteroids;
         #endregion
-        void OnTriggerEnter(Collider collider)
-        {
-            Orbit colliderOrbit = collider.GetComponent<Orbit>();
-            if (colliderOrbit != null && colliderOrbit != AttachOrbit)
-            {
-                PossibleOrbits.Add(colliderOrbit);
-            }
-            
-        }
-
-        void OnTriggerExit(Collider collider)
-        {
-            Orbit colliderOrbit = collider.GetComponent<Orbit>();
-            if (colliderOrbit != null && colliderOrbit != AttachOrbit)
-            {
-                PossibleOrbits.Remove(colliderOrbit);
-            }
-        }
+        
 
         protected override void Awake()
         {
             base.Awake();
+
         }
 
         // Use this for initialization
@@ -46,6 +30,9 @@ namespace Assets.Scripts
         {
             base.Start();
             PossibleOrbits = new List<Orbit>();
+
+            Planet.OnTriggerEnterAction += OnPlanetTriggerEnter;
+            Planet.OnTriggerExitAction += OnPlanetTriggerExit;
         }
 
         // Update is called once per frame
@@ -82,6 +69,25 @@ namespace Assets.Scripts
             {
                 AttachOrbit = PossibleOrbits[0];
                 PossibleOrbits.Remove(AttachOrbit);
+            }
+        }
+
+        void OnPlanetTriggerEnter(Collider collider)
+        {
+            Orbit colliderOrbit = collider.GetComponent<Orbit>();
+            if (colliderOrbit != null && colliderOrbit != AttachOrbit)
+            {
+                PossibleOrbits.Add(colliderOrbit);
+            }
+
+        }
+
+        void OnPlanetTriggerExit(Collider collider)
+        {
+            Orbit colliderOrbit = collider.GetComponent<Orbit>();
+            if (colliderOrbit != null && colliderOrbit != AttachOrbit)
+            {
+                PossibleOrbits.Remove(colliderOrbit);
             }
         }
 

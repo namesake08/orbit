@@ -1,28 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.GameLogic
 {
-    public class Orbit : CachedBehaviour
+    public class Orbit : SpaceBody
     {
-
-        #region PROPERTIES
-
-        public float Radius
+        /// <summary>
+        /// Планета, к которой привязана орбита
+        /// </summary>
+        public Planet SelfPlanet
         {
-            get
-            {
-                // 0.5 - стандартный размер сферы (примитива) в редакторе
-                return 0.5f * transform.lossyScale.x; //Radius = MeshRenderer.bounds.size.x / 2;
-            }
+            get;
+            private set;
         }
-
-        #endregion
 
         protected override void Awake()
         {
             base.Awake();
 
+            if (_parentTransform != null)
+                SelfPlanet = _parentTransform.GetComponentInChildren<Planet>();
         }
 
         // Use this for initialization

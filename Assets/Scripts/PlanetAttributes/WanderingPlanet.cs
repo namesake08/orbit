@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts;
+using Assets.Scripts.GameLogic;
 
 
 namespace Assets.Scripts.PlanetAttributes
@@ -16,7 +16,7 @@ namespace Assets.Scripts.PlanetAttributes
         #region FIELDS
 
         [SerializeField]
-        private GameObject _splineRoot;
+        private GameObject _splineRoot = null;
         [SerializeField]
         private float _duration = 10;
         [SerializeField]

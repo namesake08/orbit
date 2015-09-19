@@ -7,16 +7,16 @@ namespace Assets.Scripts
     {
         #region FIELDS
         [SerializeField]
-        private Material _splineLineMaterial;
+        private Material _splineLineMaterial = null;
 
         [SerializeField]
-        private GameObject _splineLineTrail;
+        private GameObject _splineLineTrail = null;
 
         [SerializeField]
-        private Material _invisibleMaterial;
+        private Material _invisibleMaterial = null;
 
         [SerializeField]
-        private GameObject _clocks;
+        private GameObject _clocks = null;
         #endregion
 
         #region PROPERTIES
