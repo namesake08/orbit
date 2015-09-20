@@ -140,6 +140,19 @@ namespace Assets.Scripts.GameLogic
             OrbitingDirection = -OrbitingDirection;
         }
 
+        public void Destroy()
+        {
+            GameObject effect = Instantiate(GameValues.DestroyEffect);
+            Vector3 v = transform.position; v.z -= 1f;
+            effect.transform.position = v;
+            //effect.transform.localScale *= transform.lossyScale.magnitude;
+            ParticleSystem particleSystem = effect.GetComponent<ParticleSystem>();
+            particleSystem.startSize *= transform.lossyScale.magnitude / 3f;
+            
+
+            Destroy(gameObject);
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -148,6 +161,9 @@ namespace Assets.Scripts.GameLogic
             Orbit = GetComponentInChildren<Orbit>();
 
             InitAttachOrbit();
+
+            Planet.OnTriggerEnterAction += OnPlanetTriggerEnter;
+            Planet.OnTriggerExitAction += OnPlanetTriggerExit;
         }
 
         // Use this for initialization
@@ -170,6 +186,16 @@ namespace Assets.Scripts.GameLogic
         {
             OrbitalMotion();
             SelfRotation();
+        }
+
+        protected virtual void OnPlanetTriggerEnter(Collider collider)
+        {
+            
+        }
+
+        protected virtual void OnPlanetTriggerExit(Collider collider)
+        {
+
         }
 
         private void InitAttachOrbit()
@@ -255,5 +281,9 @@ namespace Assets.Scripts.GameLogic
             if (Orbit != null)
                 Orbit.Collider.enabled = !Invisible;
         }
+
+
     }
+
+
 }

@@ -30,9 +30,6 @@ namespace Assets.Scripts.GameLogic
         {
             base.Start();
             PossibleOrbits = new List<Orbit>();
-
-            Planet.OnTriggerEnterAction += OnPlanetTriggerEnter;
-            Planet.OnTriggerExitAction += OnPlanetTriggerExit;
         }
 
         // Update is called once per frame
@@ -72,24 +69,35 @@ namespace Assets.Scripts.GameLogic
             }
         }
 
-        void OnPlanetTriggerEnter(Collider collider)
+        protected override void OnPlanetTriggerEnter(Collider collider)
         {
+            base.OnPlanetTriggerEnter(collider);
+
             Orbit colliderOrbit = collider.GetComponent<Orbit>();
             if (colliderOrbit != null && colliderOrbit != AttachOrbit)
             {
                 PossibleOrbits.Add(colliderOrbit);
             }
 
+            Planet colliderPlanet = collider.GetComponent<Planet>();
+            if (colliderPlanet != null)
+            {
+                Destroy();
+                colliderPlanet.Controller.Destroy();
+            }
         }
-
-        void OnPlanetTriggerExit(Collider collider)
+        protected override void OnPlanetTriggerExit(Collider collider)
         {
+            base.OnPlanetTriggerExit(collider);
+
             Orbit colliderOrbit = collider.GetComponent<Orbit>();
             if (colliderOrbit != null && colliderOrbit != AttachOrbit)
             {
                 PossibleOrbits.Remove(colliderOrbit);
             }
         }
+
+        
 
     }
 

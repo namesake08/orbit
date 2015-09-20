@@ -23,7 +23,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155774}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .183105409, y: -.354265481, z: -.880859375}
+  m_LocalPosition: {x: .183105409, y: -.354265481, z: -10.8808594}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,6 +43,7 @@ MonoBehaviour:
   _splineLineTrail: {fileID: 104542, guid: 35809f2bf0118af458b139d4de1bacde, type: 2}
   _invisibleMaterial: {fileID: 2100000, guid: f89a53f13e64bbbd73bd6eb9f8509a09, type: 2}
   _clocks: {fileID: 117384, guid: 141629c96a88388488780860556ea971, type: 2}
+  _destroyEffect: {fileID: 100006, guid: 44dd4fdbb6f10429a844c51183a4c84e, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

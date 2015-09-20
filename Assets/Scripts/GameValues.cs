@@ -17,6 +17,9 @@ namespace Assets.Scripts
 
         [SerializeField]
         private GameObject _clocks = null;
+
+        [SerializeField]
+        private GameObject _destroyEffect = null;
         #endregion
 
         #region PROPERTIES
@@ -24,6 +27,7 @@ namespace Assets.Scripts
         public static GameObject SplineLineTrail;
         public static Material InvisibleMaterial;
         public static GameObject Clocks;
+        public static GameObject DestroyEffect;
         #endregion
 
         void Awake()
@@ -32,6 +36,7 @@ namespace Assets.Scripts
             SplineLineTrail = _splineLineTrail;
             InvisibleMaterial = _invisibleMaterial;
             Clocks = _clocks;
+            DestroyEffect = _destroyEffect;
         }
 
         // Update is called once per frame
