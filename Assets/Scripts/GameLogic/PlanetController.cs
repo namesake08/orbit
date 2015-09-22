@@ -65,7 +65,8 @@ namespace Assets.Scripts.GameLogic
                 if (value != null)
                 {
                     OrbitingAngle = MathHelper.AngleBetween(value.transform.position, transform.position);
-                    value.AttachedPlanets.Add(Planet);
+                    if (value.AttachedPlanets != null)
+                        value.AttachedPlanets.Add(Planet);
                 }
             }
         }
