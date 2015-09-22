@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.GameLogic
 {
@@ -14,9 +15,20 @@ namespace Assets.Scripts.GameLogic
             private set;
         }
 
+        /// <summary>
+        /// Привязанные к орбите планеты
+        /// </summary>
+        public List<Planet> AttachedPlanets
+        {
+            get;
+            private set;
+        }
+
         protected override void Awake()
         {
             base.Awake();
+
+            AttachedPlanets = new List<Planet>();
 
             if (_parentTransform != null)
                 SelfPlanet = _parentTransform.GetComponentInChildren<Planet>();

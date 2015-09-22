@@ -36,10 +36,7 @@ namespace Assets.Scripts.GameLogic
             base.Awake();
 
             if (_parentTransform != null)
-            {
                 Controller = _parentTransform.GetComponent<PlanetController>();
-                SelfOrbit = Controller.Orbit;
-            }
         }
 
         protected virtual void OnTriggerEnter(Collider collider)
@@ -57,7 +54,8 @@ namespace Assets.Scripts.GameLogic
         // Use this for initialization
         protected virtual void Start()
         {
-            
+            if (_parentTransform != null)
+                SelfOrbit = Controller.Orbit;
         }
 
         // Update is called once per frame
