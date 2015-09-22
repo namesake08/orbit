@@ -62,11 +62,19 @@ namespace Assets.Scripts.GameLogic
         /// </summary>
         protected void OrbitalJump()
         {
-            if (PossibleOrbits.Count > 0)
+            foreach (var orbit in PossibleOrbits)
             {
-                SwitchDirection();
-                AttachOrbit = PossibleOrbits[0];
-                PossibleOrbits.Remove(AttachOrbit);
+                if (!orbit.SelfPlanet.Controller.Invisible)
+                {
+                    SwitchDirection();
+                    AttachOrbit = orbit;
+                    PossibleOrbits.Remove(AttachOrbit);
+
+                    // Исключаем возможность игрока остаться невидимым при переходе
+                    Invisible = false;
+
+                    break;
+                }
             }
         }
 
@@ -80,16 +88,22 @@ namespace Assets.Scripts.GameLogic
                 PossibleOrbits.Add(colliderOrbit);
             }
 
+        }
+
+        protected override void OnPlanetTriggerStay(Collider collider)
+        {
             Planet colliderPlanet = collider.GetComponent<Planet>();
-            
+
             // Если это планета, но не астероид, то взрываемся
-            if (colliderPlanet != null && 
-                !(colliderPlanet.Controller is Asteroid))
+            if (colliderPlanet != null &&
+                !(colliderPlanet.Controller is Asteroid) &&
+                !(colliderPlanet.Controller.Invisible))
             {
                 Destroy();
                 colliderPlanet.Controller.Destroy();
             }
         }
+
         protected override void OnPlanetTriggerExit(Collider collider)
         {
             base.OnPlanetTriggerExit(collider);

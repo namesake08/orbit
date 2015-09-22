@@ -29,6 +29,7 @@ namespace Assets.Scripts.GameLogic
         #region EVENTS
         public event Action<Collider> OnTriggerEnterAction;
         public event Action<Collider> OnTriggerExitAction;
+        public event Action<Collider> OnTriggerStayAction;
         #endregion
 
         protected override void Awake()
@@ -49,6 +50,12 @@ namespace Assets.Scripts.GameLogic
         {
             if (OnTriggerExitAction != null)
                 OnTriggerExitAction(collider);
+        }
+
+        protected virtual void OnTriggerStay(Collider collider)
+        {
+            if (OnTriggerStayAction != null)
+                OnTriggerStayAction(collider);
         }
 
         // Use this for initialization

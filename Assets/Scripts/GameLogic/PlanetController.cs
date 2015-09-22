@@ -173,6 +173,7 @@ namespace Assets.Scripts.GameLogic
 
             Planet.OnTriggerEnterAction += OnPlanetTriggerEnter;
             Planet.OnTriggerExitAction += OnPlanetTriggerExit;
+            Planet.OnTriggerStayAction += OnPlanetTriggerStay;
         }
 
         // Use this for initialization
@@ -203,6 +204,11 @@ namespace Assets.Scripts.GameLogic
         }
 
         protected virtual void OnPlanetTriggerExit(Collider collider)
+        {
+
+        }
+
+        protected virtual void OnPlanetTriggerStay(Collider collider)
         {
 
         }
@@ -285,10 +291,10 @@ namespace Assets.Scripts.GameLogic
                     Orbit.Renderer.material = Orbit.StandardMaterial;
             }
 
-            if (Planet != null)
-                Planet.Collider.enabled = !Invisible;
-            if (Orbit != null)
-                Orbit.Collider.enabled = !Invisible;
+            //if (Planet != null)
+            //    Planet.Collider.enabled = !Invisible;
+            //if (Orbit != null)
+            //    Orbit.Collider.enabled = !Invisible;
         }
 
 
