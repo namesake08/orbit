@@ -64,6 +64,7 @@ namespace Assets.Scripts.GameLogic
         {
             if (PossibleOrbits.Count > 0)
             {
+                SwitchDirection();
                 AttachOrbit = PossibleOrbits[0];
                 PossibleOrbits.Remove(AttachOrbit);
             }
@@ -80,7 +81,10 @@ namespace Assets.Scripts.GameLogic
             }
 
             Planet colliderPlanet = collider.GetComponent<Planet>();
-            if (colliderPlanet != null)
+            
+            // Если это планета, но не астероид, то взрываемся
+            if (colliderPlanet != null && 
+                !(colliderPlanet.Controller is Asteroid))
             {
                 Destroy();
                 colliderPlanet.Controller.Destroy();

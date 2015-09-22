@@ -54,11 +54,19 @@ namespace Assets.Scripts.GameLogic
         {
             get { return _attachOrbit; }
             set 
-            { 
-                _attachOrbit = value;
+            {
                 OrbitingTime = 0;
+
+                if (_attachOrbit != null)
+                    _attachOrbit.AttachedPlanets.Remove(Planet);
+
+                _attachOrbit = value;
+                
                 if (value != null)
+                {
                     OrbitingAngle = MathHelper.AngleBetween(value.transform.position, transform.position);
+                    value.AttachedPlanets.Add(Planet);
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Assets.Scripts.GameLogic;
 
 namespace Assets.Scripts.PlanetAttributes
@@ -65,6 +66,48 @@ namespace Assets.Scripts.PlanetAttributes
         private void Blink()
         {
             PlanetController.Invisible = !PlanetController.Invisible;
+
+            //List<Planet> planets = Orbit.AttachedPlanets;
+            RecursionBlink(Orbit.AttachedPlanets);
+            //while (planets.Count > 0)
+            //{
+            //    foreach (var item in planets)
+            //    {
+            //        item.Controller.Invisible = !item.Controller.Invisible;
+            //    }
+            //    planets = 
+            //}
+
+            //if (current->child)
+            //{
+            //    if (current->next) push(current->next);
+            //    current = current->child;
+            //    continue;
+            //}
+            //if (current->next)
+            //{
+            //    current = current->next;
+            //    continue;
+            //}
+            //if (stack_not_empty)
+            //{
+            //    current = pop();
+            //    continue;
+            //}
+            //else break;
+
+        }
+
+        private void RecursionBlink(List<Planet> planets)
+        {
+            if (planets.Count == 0)
+                return;
+            foreach (var item in planets)
+            {
+                item.Controller.Invisible = !item.Controller.Invisible;
+                if (item.SelfOrbit != null)
+                    RecursionBlink(item.SelfOrbit.AttachedPlanets);
+            }
         }
     }
 }
