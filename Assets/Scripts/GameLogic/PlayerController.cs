@@ -64,6 +64,7 @@ namespace Assets.Scripts.GameLogic
         {
             if (PossibleOrbits.Count > 0)
             {
+                SwitchDirection();
                 AttachOrbit = PossibleOrbits[0];
                 PossibleOrbits.Remove(AttachOrbit);
             }
